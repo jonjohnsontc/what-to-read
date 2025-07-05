@@ -1,0 +1,9 @@
+# I want to define the database layer in this file. At some point, I will also
+# add the application / Spring Boot layer.
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
