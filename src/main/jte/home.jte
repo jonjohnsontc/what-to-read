@@ -10,3 +10,18 @@
     </div>
     @template.paperList(paperList = paperList)
 </div>
+
+<script>
+    let searchTimeout;
+    document.getElementById('searchBar').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const query = this.value.toLowerCase();
+            const papers = document.querySelectorAll('.paper-item');
+            papers.forEach(paper => {
+                const title = paper.querySelector('.paper-title').textContent.toLowerCase();
+                paper.style.display = title.includes(query) ? '' : 'none';
+            });
+        }, 300);
+    });
+</script>
