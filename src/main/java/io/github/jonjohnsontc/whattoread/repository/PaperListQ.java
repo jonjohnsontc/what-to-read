@@ -22,16 +22,17 @@ public interface PaperListQ extends CrudRepository<PaperListEntry, String> {
      * Retrieves a paginated list of paper entries that match a specific search term.
      * This method is used to search papers by title, authors, or tags.
      *
-     * @param term The search term to filter papers by
+     * @param term     The search term to filter papers by
      * @param pageable Pagination information
      * @return Page of PaperListEntry containing papers that match the search term
      */
     @Query(value = """
-        SELECT p FROM PaperListEntry p
-        WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :term, '%'))
-        OR LOWER(p.authors) LIKE LOWER(CONCAT('%', :term, '%'))
-        OR LOWER(p.tags) LIKE LOWER(CONCAT('%', :term, '%'))
-    """)
+                SELECT * FROM paper.paper_list p
+                WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :term, '%'))
+                OR p.authors::text LIKE LOWER(CONCAT('%', :term, '%'))
+                OR p.tags::text LIKE LOWER(CONCAT('%"', :term, '"%'))
+            """,
+            nativeQuery = true)
     Page<PaperListEntry> getPapersBySearchTerm(
             @Param(value = "term") String term,
             Pageable pageable
@@ -42,7 +43,7 @@ public interface PaperListQ extends CrudRepository<PaperListEntry, String> {
      * This method is used to filter papers based on tags.
      *
      * @param pageable Pagination information
-     * @param tag The tag to filter papers by
+     * @param tag      The tag to filter papers by
      * @return List of PaperListEntry containing papers that match the specified tag
      */
     Page<PaperListEntry> getPaperListEntriesByTagsContains(Pageable pageable, String tag);

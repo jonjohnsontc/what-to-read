@@ -7,6 +7,7 @@ import io.github.jonjohnsontc.whattoread.model.PaperList;
 import io.github.jonjohnsontc.whattoread.service.PaperService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,5 +55,26 @@ public class HomeController {
         TemplateOutput output = new StringOutput();
         templateEngine.render("paperList.jte", paperList, output);
         return output.toString();
+    }
+
+    @GetMapping("/paper/new")
+    @ResponseBody
+    public String newPaper() {
+        TemplateOutput output = new StringOutput();
+        templateEngine.render("newPaper.jte", null, output);
+        return output.toString();
+    }
+
+    @PostMapping("/paper/new")
+    @ResponseBody
+    public String createPaper(@RequestParam String title, @RequestParam String authors,
+                              @RequestParam String tags, @RequestParam String url,
+                              @RequestParam int year, @RequestParam(required = false) Integer rating,
+                              @RequestParam boolean read) {
+        // Convert authors and tags from comma-separated strings to arrays
+        String[] authorsArray = authors.split(",");
+        String[] tagsArray = tags.split(",");
+        paperService.createPaper(title, url, year, rating, authorsArray, tagsArray, read);
+        return "redirect:/";
     }
 }

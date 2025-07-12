@@ -3,25 +3,30 @@
 
 <div class="container">
     <h1>What to Read</h1>
-    <input type="text" id="searchBar" placeholder="Search papers..." />
+    <input type="text" id="searchBar" placeholder="Search papers..."/>
     <div class="filter-container">
         <label for="filterRead">Show Read Papers</label>
-        <input type="checkbox" id="filterRead" />
+        <input type="checkbox" id="filterRead"/>
     </div>
-    @template.paperList(paperList = paperList)
+    <div id="paperListContainer" class="list-container">
+        @template.paperList(paperList = paperList)
+    </div>
 </div>
 
 <script>
     let searchTimeout;
-    document.getElementById('searchBar').addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            const query = this.value.toLowerCase();
-            const papers = document.querySelectorAll('.paper-item');
-            papers.forEach(paper => {
-                const title = paper.querySelector('.paper-title').textContent.toLowerCase();
-                paper.style.display = title.includes(query) ? '' : 'none';
+
+    function performSearch() {
+        const searchTerm = document.getElementById('searchBar').value;
+        fetch('/search?term=' + encodeURIComponent(searchTerm))
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('paperListContainer').innerHTML = html;
             });
-        }, 300);
+    }
+
+    document.getElementById('searchBar').addEventListener('input', function () {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(performSearch, 300);
     });
 </script>

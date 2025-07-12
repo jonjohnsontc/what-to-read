@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import io.github.jonjohnsontc.whattoread.repository.PaperListQ;
 import io.github.jonjohnsontc.whattoread.model.PaperListEntry;
 
+import java.util.List;
+
 @Service
 public class PaperService {
     private final PaperListQ paperListQ;
@@ -47,5 +49,31 @@ public class PaperService {
     public Page<PaperListEntry> getAllPapers() {
         var pageable = PageRequest.of(0, 100); // Adjust page size as needed
         return paperListQ.getAllPapers(pageable);
+    }
+
+    /**
+     * Creates a new paper entry in the paper list.
+     * This method is used to add a new paper with its details.
+     *
+     * @param title   The title of the paper
+     * @param url     The URL of the paper
+     * @param year    The year of publication
+     * @param rating  The rating of the paper (0-5)
+     * @param authors An array of authors of the paper
+     * @param tags    An array of tags associated with the paper
+     * @param read    Indicates whether the paper has been read
+     */
+    public void createPaper(String title, String url, int year, int rating, String[] authors, String[] tags, boolean read) {
+        var paperListEntry = PaperListEntry.builder()
+                .id(java.util.UUID.randomUUID().toString())
+                .title(title)
+                .url(url)
+                .rating(rating)
+                .read(read)
+                .authors(List.of(authors))
+                .tags(List.of(tags))
+                .year(year)
+                .build();
+        paperListQ.save(paperListEntry);
     }
 }
