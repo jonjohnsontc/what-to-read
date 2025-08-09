@@ -67,6 +67,8 @@ I need to represent the following views somewhere in the frontend:
 - Filter papers (part of view all papers) /search?q={query}
 - Update a paper /paper/{id}/edit
 
+In my model, I have a review section, so each paper can potentially have a "score" from 1 - 5, and a text review, but I don't have a way to expose that to the user yet.
+
 #### Related Templates
 
 JTE is going to be the template engine building the views. The above views can all leverage similar templates:

@@ -9,6 +9,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - backend
   flyway:
@@ -24,9 +26,12 @@ services:
       FLYWAY_CLEAN_DISABLED: "false"
     depends_on:
       - db
-    command: -connectRetries=60 -baselineOnMigrate=true migrate
+    command: -connectRetries=60 clean migrate
     networks:
       - backend
 
 networks:
     backend:
+
+volumes:
+  postgres_data:

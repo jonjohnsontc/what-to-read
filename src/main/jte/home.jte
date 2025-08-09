@@ -2,6 +2,9 @@
 @param PaperList paperList
 
 <div class="container">
+    <div>
+        <a href="/paper/new">Add a Paper</a>
+    </div>
     <h1>What to Read</h1>
     <input type="text" id="searchBar" placeholder="Search papers..."/>
     <div class="filter-container">

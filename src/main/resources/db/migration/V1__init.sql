@@ -51,3 +51,13 @@ CREATE TABLE paper.reviews
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (paper_id) REFERENCES paper.papers (id) ON DELETE CASCADE
 );
+
+CREATE TABLE paper.notes
+(
+    id         UUID PRIMARY KEY,
+    paper_id   UUID NOT NULL,
+    content    TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (paper_id) REFERENCES paper.papers (id) ON DELETE CASCADE
+);

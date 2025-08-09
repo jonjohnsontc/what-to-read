@@ -11,6 +11,13 @@ import lombok.Getter;
 import java.util.List;
 import io.github.jonjohnsontc.whattoread.converter.StringListConverter;
 
+/**
+ * Represents a paper in the home page of the UI.
+ * It's also the entity that represents a paper when a user adds a new paper.
+ * I don't know if this is the best way to do it, a user may want to add more attributes
+ * to the paper, but these are concerns for later.
+ */
+
 @Builder
 @NoArgsConstructor
 @Entity
@@ -28,8 +35,9 @@ public class PaperListEntry {
     private int year;
     private Integer rating;
     private boolean read;
+    private String notes;
 
-    public PaperListEntry(String id, String title, List<String> authors, List<String> tags, String url, int year, Integer rating, boolean read) {
+    public PaperListEntry(String id, String title, List<String> authors, List<String> tags, String url, int year, Integer rating, boolean read, String notes) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -38,5 +46,6 @@ public class PaperListEntry {
         this.year = year;
         this.rating = rating;
         this.read = read;
+        this.notes = notes;
     }
 }

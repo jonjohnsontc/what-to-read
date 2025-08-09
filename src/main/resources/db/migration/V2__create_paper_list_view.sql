@@ -9,11 +9,13 @@ SELECT
     p.url AS url,
     p.year AS year,
     r.rating AS rating,
-    p.read AS read
+    p.read AS read,
+    n.content as notes
 FROM paper.papers p
 LEFT JOIN paper.paper_authors pa ON p.id = pa.paper_id
 LEFT JOIN paper.authors a ON pa.author_id = a.id
 LEFT JOIN paper.paper_tags pt ON p.id = pt.paper_id
 LEFT JOIN paper.reviews r ON p.id = r.paper_id
 LEFT JOIN paper.tags t ON pt.tag_id = t.id
-GROUP BY p.id, p.name, p.year, r.rating, p.url, p.read
+LEFT JOIN paper.notes n ON p.id = n.paper_id
+GROUP BY p.id, p.name, p.year, r.rating, p.url, p.read, notes

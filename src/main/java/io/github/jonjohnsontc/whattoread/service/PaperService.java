@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
 import io.github.jonjohnsontc.whattoread.repository.PaperListQ;
 import io.github.jonjohnsontc.whattoread.model.PaperListEntry;
+import io.github.jonjohnsontc.whattoread.exception.PaperNotFoundException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PaperService {
@@ -63,7 +65,7 @@ public class PaperService {
      * @param tags    An array of tags associated with the paper
      * @param read    Indicates whether the paper has been read
      */
-    public void createPaper(String title, String url, int year, int rating, String[] authors, String[] tags, boolean read) {
+    public void createPaper(String title, String url, int year, int rating, String[] authors, String[] tags, boolean read, String notes) {
         var paperListEntry = PaperListEntry.builder()
                 .id(java.util.UUID.randomUUID().toString())
                 .title(title)
@@ -73,7 +75,20 @@ public class PaperService {
                 .authors(List.of(authors))
                 .tags(List.of(tags))
                 .year(year)
+                .notes(notes)
                 .build();
         paperListQ.save(paperListEntry);
+    }
+
+    /**
+     * Retrieves a paper by its ID.
+     *
+     * @param id The UUID of the paper to retrieve
+     * @return PaperListEntry containing the paper details
+     * @throws PaperNotFoundException if the paper is not found
+     */
+    public PaperListEntry getPaperById(UUID id) {
+        return paperListQ.findById(id.toString())
+                .orElseThrow(() -> new PaperNotFoundException(id.toString()));
     }
 }
