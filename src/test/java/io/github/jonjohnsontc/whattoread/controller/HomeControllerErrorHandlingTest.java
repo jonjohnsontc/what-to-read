@@ -2,7 +2,7 @@ package io.github.jonjohnsontc.whattoread.controller;
 
 import gg.jte.TemplateEngine;
 import io.github.jonjohnsontc.whattoread.exception.PaperNotFoundException;
-import io.github.jonjohnsontc.whattoread.model.PaperListEntry;
+import io.github.jonjohnsontc.whattoread.model.PaperDetails;
 import io.github.jonjohnsontc.whattoread.model.ErrorPage;
 import io.github.jonjohnsontc.whattoread.service.PaperService;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,35 +30,36 @@ class HomeControllerErrorHandlingTest {
 
     private HomeController homeController;
     private UUID validUuid;
-    private PaperListEntry mockPaper;
+    private PaperDetails mockPaper;
 
     @BeforeEach
     void setUp() {
         homeController = new HomeController(templateEngine, null, paperService);
         validUuid = UUID.randomUUID();
-        mockPaper = PaperListEntry.builder()
-                .id(validUuid.toString())
-                .title("Test Paper")
-                .authors(List.of("Test Author"))
-                .tags(List.of("test"))
-                .year(2023)
-                .rating(4)
-                .read(false)
-                .url("https://example.com")
-                .notes("Test notes")
-                .build();
+        mockPaper = new PaperDetails(
+                validUuid.toString(),
+                "Test Paper",
+                List.of("Test Author"),
+                List.of("test"),
+                "https://example.com",
+                2023,
+                4,
+                "Test review",
+                false,
+                "Test notes"
+        );
     }
 
     @Test
     void viewPaper_WithValidUuidAndExistingPaper_ShouldRenderPaperDetails() {
         // Arrange
-        when(paperService.getPaperById(validUuid)).thenReturn(mockPaper);
+        when(paperService.getPaperDetailsById(validUuid)).thenReturn(mockPaper);
 
         // Act
-        String result = homeController.viewPaper(validUuid.toString());
+        String result = homeController.viewPaper(validUuid.toString(), false);
 
         // Assert
-        verify(paperService).getPaperById(validUuid);
+        verify(paperService).getPaperDetailsById(validUuid);
         verify(templateEngine).render(eq("paperDetails.jte"), eq(mockPaper), any());
         assertNotNull(result);
     }
@@ -69,10 +70,10 @@ class HomeControllerErrorHandlingTest {
         String invalidUuid = "not-a-valid-uuid";
 
         // Act
-        String result = homeController.viewPaper(invalidUuid);
+        String result = homeController.viewPaper(invalidUuid, false);
 
         // Assert
-        verify(paperService, never()).getPaperById(any());
+        verify(paperService, never()).getPaperDetailsById(any());
         verify(templateEngine).render(eq("error/paperNotFound.jte"), any(ErrorPage.class), any());
         assertNotNull(result);
     }
@@ -82,14 +83,14 @@ class HomeControllerErrorHandlingTest {
         // Arrange
         UUID nonExistentUuid = UUID.randomUUID();
 
-        when(paperService.getPaperById(nonExistentUuid))
+        when(paperService.getPaperDetailsById(nonExistentUuid))
                 .thenThrow(new PaperNotFoundException(nonExistentUuid.toString()));
 
         // Act
-        String result = homeController.viewPaper(nonExistentUuid.toString());
+        String result = homeController.viewPaper(nonExistentUuid.toString(), false);
 
         // Assert
-        verify(paperService).getPaperById(nonExistentUuid);
+        verify(paperService).getPaperDetailsById(nonExistentUuid);
         verify(templateEngine).render(eq("error/paperNotFound.jte"), any(ErrorPage.class), any());
         assertNotNull(result);
     }
@@ -100,10 +101,10 @@ class HomeControllerErrorHandlingTest {
         String emptyUuid = "";
 
         // Act
-        String result = homeController.viewPaper(emptyUuid);
+        String result = homeController.viewPaper(emptyUuid, false);
 
         // Assert
-        verify(paperService, never()).getPaperById(any());
+        verify(paperService, never()).getPaperDetailsById(any());
         verify(templateEngine).render(eq("error/paperNotFound.jte"), any(ErrorPage.class), any());
         assertNotNull(result);
     }
@@ -111,10 +112,10 @@ class HomeControllerErrorHandlingTest {
     @Test
     void viewPaper_WithNullString_ShouldRenderErrorPage() {
         // Act
-        String result = homeController.viewPaper(null);
+        String result = homeController.viewPaper(null, false);
 
         // Assert
-        verify(paperService, never()).getPaperById(any());
+        verify(paperService, never()).getPaperDetailsById(any());
         verify(templateEngine).render(eq("error/paperNotFound.jte"), any(ErrorPage.class), any());
         assertNotNull(result);
     }
@@ -122,7 +123,7 @@ class HomeControllerErrorHandlingTest {
     @Test
     void renderErrorPage_ShouldCreateErrorPageWithCorrectMessage() {
         // Act
-        homeController.viewPaper("invalid-uuid");
+        homeController.viewPaper("invalid-uuid", false);
 
         // Assert
         verify(templateEngine).render(eq("error/paperNotFound.jte"), any(ErrorPage.class), any());

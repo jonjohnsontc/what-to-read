@@ -14,7 +14,7 @@ public interface PaperListQ extends CrudRepository<PaperListEntry, String> {
      *
      * @return A Page containing all papers
      */
-    @Query("SELECT p FROM PaperListEntry p")
+    @Query(value = "SELECT * FROM paper.paper_list p", nativeQuery = true)
     Page<PaperListEntry> getAllPapers(Pageable pageable);
 
 

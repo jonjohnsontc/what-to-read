@@ -9,8 +9,6 @@ import io.github.jonjohnsontc.whattoread.service.PaperService;
 import io.github.jonjohnsontc.whattoread.exception.PaperNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -82,17 +80,25 @@ public class HomeController {
 
     @GetMapping("/paper/{id}")
     @ResponseBody
-    public String viewPaper(@PathVariable String id) {
+    public String viewPaper(@PathVariable String id, @RequestParam(required = false, defaultValue = "false") boolean edit) {
         try {
+            // Check for null or empty ID first
+            if (id == null || id.trim().isEmpty()) {
+                return renderErrorPage("The paper ID is missing. Please check the URL and try again.");
+            }
+
             // Parse the UUID - this will throw IllegalArgumentException if invalid
             UUID paperId = UUID.fromString(id);
 
+            // If edit is true, we use edit template
+            String templateName = "paperDetails.jte";
+
             // Get the paper - this will throw PaperNotFoundException if not found
-            var paper = paperService.getPaperById(paperId);
+            var paper = paperService.getPaperDetailsById(paperId);
 
             // Render the paper details template
             TemplateOutput output = new StringOutput();
-            templateEngine.render("paperDetails.jte", paper, output);
+            templateEngine.render(templateName, paper, output);
             return output.toString();
 
         } catch (IllegalArgumentException e) {

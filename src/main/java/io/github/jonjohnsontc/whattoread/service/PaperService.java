@@ -1,5 +1,7 @@
 package io.github.jonjohnsontc.whattoread.service;
 
+import io.github.jonjohnsontc.whattoread.model.PaperDetails;
+import io.github.jonjohnsontc.whattoread.repository.PaperDetailsQ;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +15,11 @@ import java.util.UUID;
 @Service
 public class PaperService {
     private final PaperListQ paperListQ;
+    private final PaperDetailsQ paperDetailsQ;
 
-    public PaperService(PaperListQ paperListQ) {
+    public PaperService(PaperListQ paperListQ, PaperDetailsQ paperDetailsQ) {
         this.paperListQ = paperListQ;
+        this.paperDetailsQ = paperDetailsQ;
     }
 
     /**
@@ -89,6 +93,11 @@ public class PaperService {
      */
     public PaperListEntry getPaperById(UUID id) {
         return paperListQ.findById(id.toString())
+                .orElseThrow(() -> new PaperNotFoundException(id.toString()));
+    }
+
+    public PaperDetails getPaperDetailsById(UUID id) {
+        return paperDetailsQ.findById(id.toString())
                 .orElseThrow(() -> new PaperNotFoundException(id.toString()));
     }
 }

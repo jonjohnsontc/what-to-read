@@ -1,5 +1,7 @@
--- Creating a view to list all papers with their details
+-- Creating a view to list papers with high-level details
 -- This view matches the PaperList class in my data model
+-- Right now, this is really close to the paper_details view,
+-- but I plan on reducing the amount of data returned here
 CREATE OR REPLACE VIEW paper.paper_list AS
 SELECT
     p.id AS id,
