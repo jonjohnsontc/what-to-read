@@ -37,3 +37,6 @@ build/
 
 ### ENV ###
 .env
+
+### POSTGRES Artifacts ###
+/postgres_data/

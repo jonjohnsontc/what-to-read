@@ -1,6 +1,6 @@
 # Paper A Day Design
 
-I'd like the interface to offer me the following:
+I'd like the interface to offer me the following, to be used on a computer or mobile device:
 
 - Create an entry
 - Update an entry

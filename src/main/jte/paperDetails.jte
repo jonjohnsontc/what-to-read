@@ -88,11 +88,17 @@
             <div class="detail-group">
                 <label class="detail-label">Status:</label>
                 <div class="detail-value">
-                    <span id="readDisplay" class="status-badge ${paper.isRead() ? "read" : "unread"}">
-                        ${paper.isRead() ? "Read" : "Not Read"}
+                    @if(paper.isRead())
+                    <span id="readDisplay" class="status-badge read">
+                        Read
                     </span>
+                    @else
+                    <span id="readDisplay" class="status-badge unread">
+                        Unread
+                    </span>
+                    @endif
                     <div id="readEdit" style="display: none;">
-                        <input type="checkbox" id="readCheckbox" name="read" ${paper.isRead() ? "checked" : ""}>
+                        <input type="checkbox" id="readCheckbox" name="read" checked="${paper.isRead()}">
                         <label for="readCheckbox">Mark as read</label>
                     </div>
                 </div>
@@ -169,9 +175,11 @@
         <div class="detail-group">
             <label class="detail-label">Status:</label>
             <div class="detail-value">
-                <span class="status-badge ${paper.isRead() ? 'read' : 'unread'}">
-                    ${paper.isRead() ? 'Read' : 'Not Read'}
-                </span>
+                @if(paper.isRead())
+                    <span class="status-badge">Read</span>
+                @else
+                    <span class="status-badge">Not Read</span>
+                @endif
             </div>
         </div>
 
@@ -190,6 +198,10 @@
 </div>
 
 <style>
+body {
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto;

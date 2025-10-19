@@ -1,7 +1,7 @@
 -- Creating a view to list all papers with all their details
 CREATE OR REPLACE VIEW paper.paper_details AS
 SELECT
-    p.id AS id,
+    cast(p.id AS text) AS id,
     p.name AS title,
     ARRAY_AGG(DISTINCT a.name) AS authors,
     ARRAY_AGG(DISTINCT t.name) AS tags,
