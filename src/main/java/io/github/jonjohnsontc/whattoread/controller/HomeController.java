@@ -68,9 +68,10 @@ public class HomeController {
 
     @PostMapping("/paper/new")
     public String createPaper(@RequestParam String title, @RequestParam String authors,
-                              @RequestParam String tags, @RequestParam String url,
+                              @RequestParam(required = false) String tags, @RequestParam String url,
                               @RequestParam int year, @RequestParam(required = false) Integer rating,
                               @RequestParam boolean read, @RequestParam String notes) {
+        System.out.println("Entering /paper/new");
         // Convert authors and tags from comma-separated strings to arrays
         String[] authorsArray = authors.split(",");
         String[] tagsArray = tags.split(",");

@@ -1,6 +1,6 @@
 <div class="container">
     <h1>Add a Paper</h1>
-    <form id="paperForm" action="/newPaper" method="post">
+    <form id="paperForm" action="/paper/new" method="post">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required>
@@ -26,7 +26,11 @@
         </div>
         <div class="form-group">
             <label for="rating">Rating (1-5):</label>
-            <input type="number" id="rating" name="rating" min="1" max="5" required>
+            <input type="number" id="rating" name="rating" min="1" max="5" >
+        </div>
+        <div class="form-group">
+            <label for="tags">Tags (comma-separated):</label>
+            <input type="text" id="tags" name="tags" required>
         </div>
         <div class="form-group">
             <label for="notes">Notes:</label>
