@@ -61,3 +61,18 @@
         }
     });
 </script>
+
+<style>
+    body {
+        font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

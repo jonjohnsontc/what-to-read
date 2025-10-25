@@ -1,0 +1,37 @@
+/* Base styles */
+:root {
+  --logo-color: #1a1a1a; /* Dark gray for light mode */
+}
+
+body {
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Logo styling */
+.logo {
+  width: auto;
+  height: 3rem; /* Adjust size as needed */
+  color: var(--logo-color);
+  transition: color 0.3s ease; /* Smooth transition when switching modes */
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --logo-color: #e0e0e0; /* Light gray for dark mode */
+    background-color: black;
+  }
+
+}
+
+/* Optional: hover effect */
+.logo:hover {
+  opacity: 0.8;
+}
