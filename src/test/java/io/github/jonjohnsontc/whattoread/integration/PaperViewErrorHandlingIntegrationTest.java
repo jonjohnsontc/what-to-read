@@ -42,7 +42,7 @@ class PaperViewErrorHandlingIntegrationTest {
     void viewPaper_WithValidExistingPaper_ShouldReturnPaperDetails() {
         // Arrange - Create a test paper
         PaperListEntry testPaper = PaperListEntry.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .title("Integration Test Paper")
                 .authors(List.of("Test Author"))
                 .tags(List.of("integration", "test"))

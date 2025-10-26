@@ -71,7 +71,7 @@ public class PaperService {
      */
     public void createPaper(String title, String url, int year, int rating, String[] authors, String[] tags, boolean read, String notes) {
         var paperListEntry = PaperListEntry.builder()
-                .id(java.util.UUID.randomUUID().toString())
+                .id(java.util.UUID.randomUUID())
                 .title(title)
                 .url(url)
                 .rating(rating)

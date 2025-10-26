@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.UUID;
+
 import io.github.jonjohnsontc.whattoread.converter.StringListConverter;
 
 /**
@@ -25,7 +27,7 @@ import io.github.jonjohnsontc.whattoread.converter.StringListConverter;
 @Table(name = "paper_list", schema = "paper")
 public class PaperListEntry {
     @Id
-    private String id;
+    private UUID id;
     private String title;
     @Convert(converter = StringListConverter.class)
     private List<String> authors;
@@ -37,7 +39,7 @@ public class PaperListEntry {
     private boolean read;
     private String notes;
 
-    public PaperListEntry(String id, String title, List<String> authors, List<String> tags, String url, int year, Integer rating, boolean read, String notes) {
+    public PaperListEntry(UUID id, String title, List<String> authors, List<String> tags, String url, int year, Integer rating, boolean read, String notes) {
         this.id = id;
         this.title = title;
         this.authors = authors;

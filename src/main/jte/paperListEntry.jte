@@ -6,5 +6,5 @@
     <span>Authors: ${String.join(",", entry.getAuthors())}</span>
     <span>Year: ${entry.getYear()}</span>
     <span>Rating: ${entry.getRating()}</span>
-    <span><a href="/paper/${entry.getId()}">Read More</a></span>
+    <span><a href="/paper/${String.valueOf(entry.getId())}">Read More</a></span>
 </div>

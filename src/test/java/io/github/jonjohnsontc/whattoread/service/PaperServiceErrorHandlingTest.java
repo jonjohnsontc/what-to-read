@@ -35,7 +35,7 @@ class PaperServiceErrorHandlingTest {
         paperService = new PaperService(paperListQ, paperDetailsQ);
         validUuid = UUID.randomUUID();
         mockPaper = PaperListEntry.builder()
-                .id(validUuid.toString())
+                .id(validUuid)
                 .title("Test Paper")
                 .authors(List.of("Test Author"))
                 .tags(List.of("test"))

@@ -61,6 +61,7 @@ public class HomeController {
     @GetMapping("/paper/new")
     @ResponseBody
     public String newPaper() {
+        System.out.println("Retrieving /paper/new details");
         TemplateOutput output = new StringOutput();
         templateEngine.render("newPaper.jte", null, output);
         return output.toString();
