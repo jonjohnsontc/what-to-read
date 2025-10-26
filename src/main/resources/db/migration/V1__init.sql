@@ -3,7 +3,8 @@ CREATE SCHEMA IF NOT EXISTS paper;
 CREATE TABLE paper.authors
 (
     id   UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    CONSTRAINT authors_name_unique UNIQUE (name)
 );
 
 CREATE TABLE paper.papers

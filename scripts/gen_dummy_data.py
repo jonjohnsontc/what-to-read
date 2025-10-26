@@ -8,9 +8,12 @@ fake = Faker()
 
 def gen_authors(n):
     authors = []
+    names = set()
     for _ in range(n):
         author_id = str(uuid.uuid4())
-        name = fake.name()
+        while name := fake.name() in names:
+            continue
+        names.add(name)
         authors.append((author_id, name))
     return authors
 

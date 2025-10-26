@@ -18,5 +18,15 @@ public class PaperJdbcRepository {
             "INSERT INTO paper.papers (id, name, url, year) VALUES (?, ?, ?, ?)",
             paperId, title, url, year
         );
+        return paperId;
     }
+
+    public UUID findOrInsertAuthor(String name) {
+        jdbcTemplate.update(
+               """
+                   
+                   """
+        )
+    }
+
 }
