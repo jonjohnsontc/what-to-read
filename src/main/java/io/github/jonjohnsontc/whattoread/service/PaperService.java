@@ -10,6 +10,7 @@ import io.github.jonjohnsontc.whattoread.model.PaperListEntry;
 import io.github.jonjohnsontc.whattoread.exception.PaperNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -69,7 +70,21 @@ public class PaperService {
      * @param tags    An array of tags associated with the paper
      * @param read    Indicates whether the paper has been read
      */
-    public void createPaper(String title, String url, int year, int rating, String[] authors, String[] tags, boolean read, String notes) {
+    public void createPaper(String title, String url, int year, Optional<Integer> rating, String[] authors, String[] tags, boolean read, String notes) {
+        // Rather than try and create a paper using the PaperList view, which is impossible,
+        // I want to save the parts of the paper_list to the relevant tables
+        // I also wanna set them all up as a singular all or nothing transaction
+
+        // Tables:
+        // paper.papers (id, title -> name, url, year)
+        // paper.authors (author)
+        // paper.paper_authors
+        // paper.tags
+        // paper.paper_tags
+        // paper.notes
+
+        // Claude is recommending:
+        // - New Repositorylayer in the form of JdbcTemplate
         var paperListEntry = PaperListEntry.builder()
                 .id(java.util.UUID.randomUUID())
                 .title(title)

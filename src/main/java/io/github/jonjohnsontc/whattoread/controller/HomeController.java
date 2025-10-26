@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -70,7 +71,7 @@ public class HomeController {
     @PostMapping("/paper/new")
     public String createPaper(@RequestParam String title, @RequestParam String authors,
                               @RequestParam(required = false) String tags, @RequestParam String url,
-                              @RequestParam int year, @RequestParam(required = false) Integer rating,
+                              @RequestParam int year, @RequestParam(required = false) Optional<Integer> rating,
                               @RequestParam boolean read, @RequestParam String notes) {
         System.out.println("Entering /paper/new");
         // Convert authors and tags from comma-separated strings to arrays
