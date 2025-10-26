@@ -9,12 +9,10 @@ fake = Faker()
 def gen_authors(n):
     authors = []
     names = set()
-    for _ in range(n):
-        author_id = str(uuid.uuid4())
-        while name := fake.name() in names:
-            continue
-        names.add(name)
-        authors.append((author_id, name))
+    while len(names) < n:
+        names.add(fake.name())
+    for name in names:
+        authors.append((uuid.uuid4(), name))
     return authors
 
 def gen_papers(n):

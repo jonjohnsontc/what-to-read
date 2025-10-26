@@ -70,8 +70,10 @@ public class PaperService {
      * @param tags    An array of tags associated with the paper
      * @param read    Indicates whether the paper has been read
      */
-    public void createPaper(String title, String url, int year, Optional<Integer> rating, String[] authors, String[] tags, boolean read, String notes) {
-        // Rather than try and create a paper using the PaperList view, which is impossible,
+    public void createPaper(String title, String url, int year, Optional<Integer> rating, String[] authors,
+            String[] tags, boolean read, String notes) {
+        // Rather than try and create a paper using the PaperList view, which is
+        // impossible,
         // I want to save the parts of the paper_list to the relevant tables
         // I also wanna set them all up as a singular all or nothing transaction
 
@@ -81,6 +83,7 @@ public class PaperService {
         // paper.paper_authors
         // paper.tags
         // paper.paper_tags
+        // paper.reviews
         // paper.notes
 
         // Claude is recommending:
