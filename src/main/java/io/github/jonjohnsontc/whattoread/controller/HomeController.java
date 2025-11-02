@@ -70,14 +70,12 @@ public class HomeController {
 
     @PostMapping("/paper/new")
     public String createPaper(@RequestParam String title, @RequestParam String authors,
-                              @RequestParam(required = false) String tags, @RequestParam String url,
+                              @RequestParam(required = false, defaultValue = "") String tags, @RequestParam String url,
                               @RequestParam int year, @RequestParam(required = false) Optional<Integer> rating,
-                              @RequestParam boolean read, @RequestParam String notes) {
-        System.out.println("Entering /paper/new");
+                              @RequestParam boolean read, @RequestParam(required = false, defaultValue = "") String notes) {
         // Convert authors and tags from comma-separated strings to arrays
         String[] authorsArray = authors.split(",");
-        String[] tagsArray = tags.split(",");
-        paperService.createPaper(title, url, year, rating, authorsArray, tagsArray, read, notes);
+        paperService.createPaper(title, url, year, rating, authorsArray, tags, read, notes);
         return "redirect:/";
     }
 

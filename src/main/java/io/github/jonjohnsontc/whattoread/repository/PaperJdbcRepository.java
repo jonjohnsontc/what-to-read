@@ -16,11 +16,11 @@ public class PaperJdbcRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public UUID insertPaper(String title, String url, int year) {
+    public UUID insertPaper(String title, String url, int year, boolean read) {
         UUID paperId = UUID.randomUUID();
         jdbcTemplate.update(
-                "INSERT INTO paper.papers (id, name, url, year) VALUES (?, ?, ?, ?)",
-                paperId, title, url, year);
+                "INSERT INTO paper.papers (id, name, url, year, read) VALUES (?, ?, ?, ?, ?)",
+                paperId, title, url, year, read);
         return paperId;
     }
 

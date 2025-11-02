@@ -22,7 +22,7 @@ public class PaperService {
     private final PaperDetailsQ paperDetailsQ;
     private final PaperJdbcRepository paperRepository;
 
-    public PaperService(PaperListQ paperListQ, PaperDetailsQ paperDetailsQ,  PaperJdbcRepository paperRepository) {
+    public PaperService(PaperListQ paperListQ, PaperDetailsQ paperDetailsQ, PaperJdbcRepository paperRepository) {
         this.paperListQ = paperListQ;
         this.paperDetailsQ = paperDetailsQ;
         this.paperRepository = paperRepository;
@@ -64,7 +64,7 @@ public class PaperService {
     }
 
     /**
-     * Creates a new paper entry in the paper list.
+     * Creates a new paper entry in the db
      * This method is used to add a new paper with its details.
      *
      * @param title   The title of the paper
@@ -77,36 +77,31 @@ public class PaperService {
      */
     @Transactional
     public void createPaper(String title, String url, int year, Optional<Integer> rating, String[] authors,
-            String[] tags, boolean read, String notes) {
-        // Rather than try and create a paper using the PaperList view, which is
-        // impossible,
-        // I want to save the parts of the paper_list to the relevant tables
-        // I also wanna set them all up as a singular all or nothing transaction
+                            String tags, boolean read, String notes) {
 
-        // Tables:
-        // paper.papers (id, title -> name, url, year)
-        // paper.authors (author)
-        // paper.paper_authors
-        // paper.tags
-        // paper.paper_tags
-        // paper.reviews
-        // paper.notes
-        var paperId = paperRepository.insertPaper(title, url, year);
+        var paperId = paperRepository.insertPaper(title, url, year, read);
 
         var authorIds = new ArrayList<UUID>();
         for (var i = 0; i < authors.length; i++) {
-           authorIds.add(paperRepository.findOrInsertAuthor(authors[i]));
+            authorIds.add(paperRepository.findOrInsertAuthor(authors[i]));
         }
         paperRepository.insertPaperAuthors(paperId, authorIds);
-        var tagIds = paperRepository.findOrInsertTags(List.of(tags));
-        paperRepository.insertPaperTags(paperId, tagIds);
+
+        if (tags.isEmpty()) {
+            var tagsArray = tags.split(",");
+            var tagIds = paperRepository.findOrInsertTags(List.of(tagsArray));
+            paperRepository.insertPaperTags(paperId, tagIds);
+        }
 
         if (rating.isPresent()) {
             // we don't give the option to add review-text in the current create-paper screen
             paperRepository.insertPaperReview(paperId, rating.get(), null);
 
         }
-        paperRepository.insertNotes(paperId, notes);
+
+        if (!notes.isEmpty()) {
+            paperRepository.insertNotes(paperId, notes);
+        }
 
     }
 
