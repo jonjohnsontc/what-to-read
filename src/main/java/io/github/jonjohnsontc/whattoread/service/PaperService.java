@@ -87,7 +87,7 @@ public class PaperService {
         }
         paperRepository.insertPaperAuthors(paperId, authorIds);
 
-        if (tags.isEmpty()) {
+        if (!tags.isEmpty()) {
             var tagsArray = tags.split(",");
             var tagIds = paperRepository.findOrInsertTags(List.of(tagsArray));
             paperRepository.insertPaperTags(paperId, tagIds);

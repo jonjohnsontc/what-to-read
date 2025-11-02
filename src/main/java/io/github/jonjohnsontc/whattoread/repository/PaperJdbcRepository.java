@@ -79,7 +79,7 @@ public class PaperJdbcRepository {
 
     public void insertPaperReview(UUID paperId, int rating, String reviewText) {
         jdbcTemplate.update(
-                "INSERT INTO paper.reviews (id, paper_id, rating, review) VALUES (gen_random_uuid(), ?, ?, ?)",
+                "INSERT INTO paper.reviews (paper_id, rating, review) VALUES (?, ?, ?)",
                 paperId, rating, reviewText);
 
     }
