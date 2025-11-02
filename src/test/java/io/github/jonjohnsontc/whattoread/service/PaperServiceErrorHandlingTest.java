@@ -2,6 +2,7 @@ package io.github.jonjohnsontc.whattoread.service;
 
 import io.github.jonjohnsontc.whattoread.exception.PaperNotFoundException;
 import io.github.jonjohnsontc.whattoread.model.PaperListEntry;
+import io.github.jonjohnsontc.whattoread.repository.PaperJdbcRepository;
 import io.github.jonjohnsontc.whattoread.repository.PaperListQ;
 import io.github.jonjohnsontc.whattoread.repository.PaperDetailsQ;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +27,16 @@ class PaperServiceErrorHandlingTest {
     @Mock
     private PaperDetailsQ paperDetailsQ;
 
+    @Mock
+    private PaperJdbcRepository paperRepository;
+
     private PaperService paperService;
     private UUID validUuid;
     private PaperListEntry mockPaper;
 
     @BeforeEach
     void setUp() {
-        paperService = new PaperService(paperListQ, paperDetailsQ);
+        paperService = new PaperService(paperListQ, paperDetailsQ, paperRepository);
         validUuid = UUID.randomUUID();
         mockPaper = PaperListEntry.builder()
                 .id(validUuid)

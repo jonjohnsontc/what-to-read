@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,16 +77,17 @@ public class PaperJdbcRepository {
         }
     }
 
-    public void insertPaperReview(UUID paperId, int rating, Optional<String> reviewText) {
-        if (reviewText.isPresent()) {
-            jdbcTemplate.update(
-                    "INSERT INTO paper.reviews (id, paper_id, rating, review) VALUES (gen_random_uuid(), ?, ?, ?)",
-                    paperId, rating, reviewText);
-        } else {
-            jdbcTemplate.update(
-                    "INSERT INTO paper.reviews (id, paper_id, rating) VALUES (gen_random_uuid(), ?, ?)",
-                    paperId, rating);
-        }
+    public void insertPaperReview(UUID paperId, int rating, String reviewText) {
+        jdbcTemplate.update(
+                "INSERT INTO paper.reviews (id, paper_id, rating, review) VALUES (gen_random_uuid(), ?, ?, ?)",
+                paperId, rating, reviewText);
+
     }
 
+    public void insertNotes(UUID paperId, String notes) {
+        jdbcTemplate.update(
+                "INSERT INTO paper.notes (id, paper_id, content) VALUES (gen_random_uuid(), ?, ?)",
+                paperId, notes
+        );
+    }
 }

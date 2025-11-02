@@ -2,6 +2,8 @@ package io.github.jonjohnsontc.whattoread.service;
 
 import io.github.jonjohnsontc.whattoread.model.PaperDetails;
 import io.github.jonjohnsontc.whattoread.repository.PaperDetailsQ;
+import io.github.jonjohnsontc.whattoread.repository.PaperJdbcRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +11,7 @@ import io.github.jonjohnsontc.whattoread.repository.PaperListQ;
 import io.github.jonjohnsontc.whattoread.model.PaperListEntry;
 import io.github.jonjohnsontc.whattoread.exception.PaperNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,10 +20,12 @@ import java.util.UUID;
 public class PaperService {
     private final PaperListQ paperListQ;
     private final PaperDetailsQ paperDetailsQ;
+    private final PaperJdbcRepository paperRepository;
 
-    public PaperService(PaperListQ paperListQ, PaperDetailsQ paperDetailsQ) {
+    public PaperService(PaperListQ paperListQ, PaperDetailsQ paperDetailsQ,  PaperJdbcRepository paperRepository) {
         this.paperListQ = paperListQ;
         this.paperDetailsQ = paperDetailsQ;
+        this.paperRepository = paperRepository;
     }
 
     /**
@@ -70,6 +75,7 @@ public class PaperService {
      * @param tags    An array of tags associated with the paper
      * @param read    Indicates whether the paper has been read
      */
+    @Transactional
     public void createPaper(String title, String url, int year, Optional<Integer> rating, String[] authors,
             String[] tags, boolean read, String notes) {
         // Rather than try and create a paper using the PaperList view, which is
@@ -85,21 +91,23 @@ public class PaperService {
         // paper.paper_tags
         // paper.reviews
         // paper.notes
+        var paperId = paperRepository.insertPaper(title, url, year);
 
-        // Claude is recommending:
-        // - New Repositorylayer in the form of JdbcTemplate
-        var paperListEntry = PaperListEntry.builder()
-                .id(java.util.UUID.randomUUID())
-                .title(title)
-                .url(url)
-                .rating(rating)
-                .read(read)
-                .authors(List.of(authors))
-                .tags(List.of(tags))
-                .year(year)
-                .notes(notes)
-                .build();
-        paperListQ.save(paperListEntry);
+        var authorIds = new ArrayList<UUID>();
+        for (var i = 0; i < authors.length; i++) {
+           authorIds.add(paperRepository.findOrInsertAuthor(authors[i]));
+        }
+        paperRepository.insertPaperAuthors(paperId, authorIds);
+        var tagIds = paperRepository.findOrInsertTags(List.of(tags));
+        paperRepository.insertPaperTags(paperId, tagIds);
+
+        if (rating.isPresent()) {
+            // we don't give the option to add review-text in the current create-paper screen
+            paperRepository.insertPaperReview(paperId, rating.get(), null);
+
+        }
+        paperRepository.insertNotes(paperId, notes);
+
     }
 
     /**
