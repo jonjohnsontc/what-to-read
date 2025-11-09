@@ -111,6 +111,33 @@ public class HomeController {
         }
     }
 
+    @PostMapping("/paper/{id}")
+    public String updatePaper(@PathVariable String id,
+                              @RequestParam String title,
+                              @RequestParam String url,
+                              @RequestParam int year,
+                              @RequestParam(required = false, defaultValue = "") String authors,
+                              @RequestParam(required = false, defaultValue = "") String tags,
+                              @RequestParam(required = false, defaultValue = "false") boolean read,
+                              @RequestParam(required = false, defaultValue = "") String notes) {
+        try {
+            UUID paperId = UUID.fromString(id);
+
+            // Convert authors from comma-separated string to array
+            String[] authorsArray = authors.isEmpty()
+                ? new String[0]
+                : authors.split(",");
+
+            paperService.updatePaper(paperId, title, url, year, authorsArray, tags, read, notes);
+
+            return "redirect:/paper/" + id;
+        } catch (IllegalArgumentException e) {
+            return "redirect:/";
+        } catch (PaperNotFoundException e) {
+            return "redirect:/";
+        }
+    }
+
     /**
      * Helper method to render error pages consistently
      */

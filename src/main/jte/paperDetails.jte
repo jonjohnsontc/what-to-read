@@ -23,8 +23,7 @@
             <div class="detail-group">
                 <label class="detail-label">Title:</label>
                 <div class="detail-value">
-                    <span id="titleDisplay">${paper.getTitle()}</span>
-                    <input type="text" id="titleEdit" name="title" value="${paper.getTitle()}" class="edit-input" style="display: none;" required>
+                    <input type="text" name="title" value="${paper.getTitle()}" class="edit-input" required>
                 </div>
             </div>
 
@@ -32,8 +31,7 @@
             <div class="detail-group">
                 <label class="detail-label">URL:</label>
                 <div class="detail-value">
-                    <span id="urlDisplay"><a href="${paper.getUrl()}" target="_blank" rel="noopener noreferrer">${paper.getUrl()}</a></span>
-                    <input type="url" id="urlEdit" name="url" value="${paper.getUrl()}" class="edit-input" style="display: none;" required>
+                    <input type="url" name="url" value="${paper.getUrl()}" class="edit-input" required>
                 </div>
             </div>
 
@@ -41,8 +39,7 @@
             <div class="detail-group">
                 <label class="detail-label">Year:</label>
                 <div class="detail-value">
-                    <span id="yearDisplay">${paper.getYear()}</span>
-                    <input type="number" id="yearEdit" name="year" value="${paper.getYear()}" class="edit-input" style="display: none;" required>
+                    <input type="number" name="year" value="${paper.getYear()}" class="edit-input" required>
                 </div>
             </div>
 
@@ -50,18 +47,9 @@
             <div class="detail-group">
                 <label class="detail-label">Authors:</label>
                 <div class="detail-value">
-                    <span id="authorsDisplay">
-                        @if(paper.getAuthors() != null && !paper.getAuthors().isEmpty())
-                            @for(var author : paper.getAuthors())
-                                <span class="author-tag">${author}</span>
-                            @endfor
-                        @else
-                            <em>No authors specified</em>
-                        @endif
-                    </span>
-                    <input type="text" id="authorsEdit" name="authors"
+                    <input type="text" name="authors"
                            value="@if(paper.getAuthors() != null)${String.join(", ", paper.getAuthors())}@endif"
-                           class="edit-input" style="display: none;" placeholder="Comma-separated authors">
+                           class="edit-input" placeholder="Comma-separated authors">
                 </div>
             </div>
 
@@ -69,18 +57,9 @@
             <div class="detail-group">
                 <label class="detail-label">Tags:</label>
                 <div class="detail-value">
-                    <span id="tagsDisplay">
-                        @if(paper.getTags() != null && !paper.getTags().isEmpty())
-                            @for(var tag : paper.getTags())
-                                <span class="tag">${tag}</span>
-                            @endfor
-                        @else
-                            <em>No tags</em>
-                        @endif
-                    </span>
-                    <input type="text" id="tagsEdit" name="tags"
+                    <input type="text" name="tags"
                            value="@if(paper.getTags() != null)${paper.getTags().stream().map(t -> t).collect(java.util.stream.Collectors.joining(", "))}@endif"
-                           class="edit-input" style="display: none;" placeholder="Comma-separated tags">
+                           class="edit-input" placeholder="Comma-separated tags">
                 </div>
             </div>
 
@@ -88,19 +67,8 @@
             <div class="detail-group">
                 <label class="detail-label">Status:</label>
                 <div class="detail-value">
-                    @if(paper.isRead())
-                    <span id="readDisplay" class="status-badge read">
-                        Read
-                    </span>
-                    @else
-                    <span id="readDisplay" class="status-badge unread">
-                        Unread
-                    </span>
-                    @endif
-                    <div id="readEdit" style="display: none;">
-                        <input type="checkbox" id="readCheckbox" name="read" checked="${paper.isRead()}">
-                        <label for="readCheckbox">Mark as read</label>
-                    </div>
+                    <input type="checkbox" id="readCheckbox" name="read" checked="${paper.isRead()}">
+                    <label for="readCheckbox">Mark as read</label>
                 </div>
             </div>
 
@@ -108,14 +76,7 @@
             <div class="detail-group">
                 <label class="detail-label">Notes:</label>
                 <div class="detail-value">
-                    <div id="notesDisplay" class="notes-content">
-                        @if(paper.getNotes() != null && !paper.getNotes().trim().isEmpty())
-                            ${paper.getNotes()}
-                        @else
-                            <em>No notes</em>
-                        @endif
-                    </div>
-                    <textarea id="notesEdit" name="notes" class="edit-input notes-textarea" style="display: none;" rows="6" placeholder="Add your notes here...">${paper.getNotes() != null ? paper.getNotes() : ""}</textarea>
+                    <textarea name="notes" class="edit-input notes-textarea" rows="6" placeholder="Add your notes here...">${paper.getNotes() != null ? paper.getNotes() : ""}</textarea>
                 </div>
             </div>
         </div>
@@ -367,6 +328,10 @@ document.addEventListener('DOMContentLoaded', function() {
     editToggle.addEventListener('click', function() {
         isEditing = true;
         toggleEditMode();
+    });
+
+    saveBtn.addEventListener('click', function() {
+        paperForm.submit();
     });
 
     cancelBtn.addEventListener('click', function() {

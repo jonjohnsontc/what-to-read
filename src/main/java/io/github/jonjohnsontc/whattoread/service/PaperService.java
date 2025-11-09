@@ -121,4 +121,52 @@ public class PaperService {
         return paperDetailsQ.findById(id.toString())
                 .orElseThrow(() -> new PaperNotFoundException(id.toString()));
     }
+
+    /**
+     * Updates an existing paper with new details.
+     *
+     * @param id      The UUID of the paper to update
+     * @param title   The updated title
+     * @param url     The updated URL
+     * @param year    The updated year
+     * @param authors The updated list of authors
+     * @param tags    The updated tags (comma-separated)
+     * @param read    The updated read status
+     * @param notes   The updated notes
+     * @throws PaperNotFoundException if the paper is not found
+     */
+    @Transactional
+    public void updatePaper(UUID id, String title, String url, int year, String[] authors,
+                            String tags, boolean read, String notes) {
+        // Verify the paper exists
+        getPaperDetailsById(id);
+
+        // Update basic paper fields
+        paperRepository.updatePaper(id, title, url, year, read);
+
+        // Update authors - delete old associations and insert new ones
+        paperRepository.deletePaperAuthors(id);
+        var authorIds = new ArrayList<UUID>();
+        for (String author : authors) {
+            authorIds.add(paperRepository.findOrInsertAuthor(author.trim()));
+        }
+        paperRepository.insertPaperAuthors(id, authorIds);
+
+        // Update tags - delete old associations and insert new ones
+        paperRepository.deletePaperTags(id);
+        if (!tags.isEmpty()) {
+            var tagsArray = tags.split(",");
+            var trimmedTags = new ArrayList<String>();
+            for (String tag : tagsArray) {
+                trimmedTags.add(tag.trim());
+            }
+            var tagIds = paperRepository.findOrInsertTags(trimmedTags);
+            paperRepository.insertPaperTags(id, tagIds);
+        }
+
+        // Update notes
+        if (notes != null && !notes.isEmpty()) {
+            paperRepository.updateNotes(id, notes);
+        }
+    }
 }

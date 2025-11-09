@@ -90,4 +90,28 @@ public class PaperJdbcRepository {
                 paperId, notes
         );
     }
+
+    public void updatePaper(UUID paperId, String title, String url, int year, boolean read) {
+        jdbcTemplate.update(
+                "UPDATE paper.papers SET name = ?, url = ?, year = ?, read = ? WHERE id = ?",
+                title, url, year, read, paperId);
+    }
+
+    public void deletePaperAuthors(UUID paperId) {
+        jdbcTemplate.update(
+                "DELETE FROM paper.paper_authors WHERE paper_id = ?",
+                paperId);
+    }
+
+    public void deletePaperTags(UUID paperId) {
+        jdbcTemplate.update(
+                "DELETE FROM paper.paper_tags WHERE paper_id = ?",
+                paperId);
+    }
+
+    public void updateNotes(UUID paperId, String notes) {
+        jdbcTemplate.update(
+                "UPDATE paper.notes SET content = ? WHERE paper_id = ?",
+                notes, paperId);
+    }
 }
