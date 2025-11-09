@@ -1,3 +1,5 @@
+# NOTE: I'm not currently using fake data in dev mode, so this script may have
+# diverged from the actual data model
 import sys
 import uuid
 import random
