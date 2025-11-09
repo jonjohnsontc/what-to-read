@@ -7,9 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
-import java.util.UUID;
-
 public interface PaperListQ extends CrudRepository<PaperListEntry, String> {
     /**
      * Retrieves all papers from the paper list in a paginated format.
@@ -19,23 +16,6 @@ public interface PaperListQ extends CrudRepository<PaperListEntry, String> {
      */
     @Query(value = "SELECT * FROM paper.paper_list p", nativeQuery = true)
     Page<PaperListEntry> getAllPapers(Pageable pageable);
-
-
-    @Query(value = """
-    SELECT 
-        id,
-        authors,
-        notes,
-        rating,
-        read,
-        tags,
-        title,
-        url,
-        year
-    FROM paper.paper_list
-    where id = :id
-    """, nativeQuery = true)
-    Optional<PaperListEntry> findById(UUID id);
 
     /**
      * Retrieves a paginated list of paper entries that match a specific search term.
