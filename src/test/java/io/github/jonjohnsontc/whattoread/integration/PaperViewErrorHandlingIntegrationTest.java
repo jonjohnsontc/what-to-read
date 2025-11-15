@@ -2,25 +2,27 @@ package io.github.jonjohnsontc.whattoread.integration;
 
 import io.github.jonjohnsontc.whattoread.model.PaperListEntry;
 import io.github.jonjohnsontc.whattoread.repository.PaperListQ;
+import io.github.jonjohnsontc.whattoread.service.PaperService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@Transactional
 class PaperViewErrorHandlingIntegrationTest {
 
     @LocalServerPort
@@ -32,28 +34,36 @@ class PaperViewErrorHandlingIntegrationTest {
     @Autowired
     private PaperListQ paperListQ;
 
+    @Autowired
+    private PaperService paperService;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @AfterEach
     void cleanUp() {
-        // Clean up any test data after each test
-        paperListQ.deleteAll();
+        // Clean up any test data after each test by deleting from the actual tables
+        // Foreign key constraints with ON DELETE CASCADE will handle related records
+        jdbcTemplate.update("DELETE FROM paper.papers");
     }
 
     @Test
     void viewPaper_WithValidExistingPaper_ShouldReturnPaperDetails() {
-        // Arrange - Create a test paper
-        PaperListEntry testPaper = PaperListEntry.builder()
-                .id(UUID.randomUUID())
-                .title("Integration Test Paper")
-                .authors(List.of("Test Author"))
-                .tags(List.of("integration", "test"))
-                .year(2023)
-                .rating(5)
-                .read(true)
-                .url("https://example.com/test-paper")
-                .notes("Test notes for integration")
-                .build();
+        // Arrange - Create a test paper using PaperService
+        paperService.createPaper(
+            "Integration Test Paper",
+            "https://example.com/test-paper",
+            2023,
+            Optional.of(5),
+            new String[]{"Test Author"},
+            "integration,test",
+            true,
+            "Test notes for integration"
+        );
 
-        paperListQ.save(testPaper);
+        // Get the created paper to retrieve its ID
+        Page<PaperListEntry> papers = paperService.getAllPapers();
+        PaperListEntry testPaper = papers.getContent().get(0);
 
         // Act
         ResponseEntity<String> response = this.restTemplate.getForEntity(
