@@ -10,8 +10,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      # I want to make sure that I can access the postgres data folder
       - ./postgres_data:/var/lib/postgresql/data
+      # I want to setup our test db in our containerized setup
+      # Ideally this would be in Flyway and leveraged with Test Containers
       - ./scripts/init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh
+      # Where we store pg_dumps generated
+      - ./pg_dump:/var/dumps
     networks:
       - backend
   flyway:
