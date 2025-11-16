@@ -2,10 +2,14 @@
 
 # This is designed to run in our containerized dev environment
 
-# exit immediately on errors
+# Exit immediately on errors
 set -e
 
 # Capture current datetime in ISO8601 fmt and remove unnecessary chars
-date_str=$(date -I'minutes' | sed "s/[-:]//g")
+date_str=$(date -I'minutes' | sed "s/[-:+]//g")
 
-pg_dump -af "/var/dumps/${date_str}_pg_dump.sql"
+# We only want to dump the application schema, not flyway etc
+# We don't want the table definitions, that's part of the flyway migrations
+pg_dump -U postgres \
+        -af "/var/dumps/${date_str}_pg_dump.sql" \
+        -n "paper"
