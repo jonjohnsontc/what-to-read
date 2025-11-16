@@ -40,3 +40,4 @@ build/
 
 ### POSTGRES Artifacts ###
 /postgres_data/
+/pg_dump/
