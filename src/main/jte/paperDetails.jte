@@ -1,10 +1,20 @@
 @import io.github.jonjohnsontc.whattoread.model.PaperDetails
 @param PaperDetails paper
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Details</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
 <div class="container">
     <div class="navigation">
         <a href="/">&larr; Back to Papers</a>
-</div>
+    </div>
 
     <div class="paper-header">
         <h1 id="paperTitle">${paper.getTitle()}</h1>
@@ -76,7 +86,8 @@
             <div class="detail-group">
                 <label class="detail-label">Notes:</label>
                 <div class="detail-value">
-                    <textarea name="notes" class="edit-input notes-textarea" rows="6" placeholder="Add your notes here...">${paper.getNotes() != null ? paper.getNotes() : ""}</textarea>
+                    <textarea name="notes" class="edit-input notes-textarea" rows="6"
+                              placeholder="Add your notes here...">${paper.getNotes() != null ? paper.getNotes() : ""}</textarea>
                 </div>
             </div>
         </div>
@@ -94,7 +105,8 @@
         <div class="detail-group">
             <label class="detail-label">URL:</label>
             <div class="detail-value">
-                <a href="${paper.getUrl()}" target="_blank" rel="noopener noreferrer" class="paper-link">${paper.getUrl()}</a>
+                <a href="${paper.getUrl()}" target="_blank" rel="noopener noreferrer"
+                   class="paper-link">${paper.getUrl()}</a>
             </div>
         </div>
 
@@ -157,204 +169,206 @@
         </div>
     </div>
 </div>
+</body>
 
 <style>
-body {
-    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
-}
+    body {
+        font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
 
-.navigation {
-    margin-bottom: 20px;
-}
+    .navigation {
+        margin-bottom: 20px;
+    }
 
-.navigation a {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 16px;
-}
+    .navigation a {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 16px;
+    }
 
-.navigation a:hover {
-    text-decoration: underline;
-}
+    .navigation a:hover {
+        text-decoration: underline;
+    }
 
-.paper-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #eee;
-}
+    .paper-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #eee;
+    }
 
-.paper-header h1 {
-    margin: 0;
-    color: #333;
-}
+    .paper-header h1 {
+        margin: 0;
+        color: #333;
+    }
 
-.paper-actions {
-    display: flex;
-    gap: 10px;
-}
+    .paper-actions {
+        display: flex;
+        gap: 10px;
+    }
 
-.edit-btn, .save-btn, .cancel-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
+    .edit-btn, .save-btn, .cancel-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
 
-.edit-btn {
-    background-color: #007bff;
-    color: white;
-}
+    .edit-btn {
+        background-color: #007bff;
+        color: white;
+    }
 
-.save-btn {
-    background-color: #28a745;
-    color: white;
-}
+    .save-btn {
+        background-color: #28a745;
+        color: white;
+    }
 
-.cancel-btn {
-    background-color: #6c757d;
-    color: white;
-}
+    .cancel-btn {
+        background-color: #6c757d;
+        color: white;
+    }
 
-.paper-details {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-}
+    .paper-details {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+    }
 
-.detail-group {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: flex-start;
-}
+    .detail-group {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: flex-start;
+    }
 
-.detail-label {
-    font-weight: bold;
-    min-width: 120px;
-    color: #555;
-    margin-right: 15px;
-    margin-top: 5px;
-}
+    .detail-label {
+        font-weight: bold;
+        min-width: 120px;
+        color: #555;
+        margin-right: 15px;
+        margin-top: 5px;
+    }
 
-.detail-value {
-    flex: 1;
-    line-height: 1.5;
-}
+    .detail-value {
+        flex: 1;
+        line-height: 1.5;
+    }
 
-.edit-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
+    .edit-input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
 
-.notes-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
+    .notes-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
 
-.author-tag, .tag {
-    display: inline-block;
-    background: #e9ecef;
-    padding: 4px 8px;
-    margin-right: 8px;
-    margin-bottom: 4px;
-    border-radius: 4px;
-    font-size: 12px;
-}
+    .author-tag, .tag {
+        display: inline-block;
+        background: #e9ecef;
+        padding: 4px 8px;
+        margin-right: 8px;
+        margin-bottom: 4px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
 
-.tag {
-    background: #007bff;
-    color: white;
-}
+    .tag {
+        background: #007bff;
+        color: white;
+    }
 
-.status-badge {
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-}
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+    }
 
-.status-badge.read {
-    background: #d4edda;
-    color: #155724;
-}
+    .status-badge.read {
+        background: #d4edda;
+        color: #155724;
+    }
 
-.status-badge.unread {
-    background: #f8d7da;
-    color: #721c24;
-}
+    .status-badge.unread {
+        background: #f8d7da;
+        color: #721c24;
+    }
 
-.paper-link {
-    color: #007bff;
-    text-decoration: none;
-    word-break: break-all;
-}
+    .paper-link {
+        color: #007bff;
+        text-decoration: none;
+        word-break: break-all;
+    }
 
-.paper-link:hover {
-    text-decoration: underline;
-}
+    .paper-link:hover {
+        text-decoration: underline;
+    }
 
-.notes-content {
-    white-space: pre-wrap;
-    background: white;
-    padding: 12px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    min-height: 60px;
-}
+    .notes-content {
+        white-space: pre-wrap;
+        background: white;
+        padding: 12px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        min-height: 60px;
+    }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const editToggle = document.getElementById('editToggle');
-    const saveBtn = document.getElementById('saveBtn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const paperForm = document.getElementById('paperForm');
-    const viewMode = document.getElementById('viewMode');
+    document.addEventListener('DOMContentLoaded', function () {
+        const editToggle = document.getElementById('editToggle');
+        const saveBtn = document.getElementById('saveBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const paperForm = document.getElementById('paperForm');
+        const viewMode = document.getElementById('viewMode');
 
-    let isEditing = false;
+        let isEditing = false;
 
-    editToggle.addEventListener('click', function() {
-        isEditing = true;
-        toggleEditMode();
-    });
+        editToggle.addEventListener('click', function () {
+            isEditing = true;
+            toggleEditMode();
+        });
 
-    saveBtn.addEventListener('click', function() {
-        paperForm.submit();
-    });
+        saveBtn.addEventListener('click', function () {
+            paperForm.submit();
+        });
 
-    cancelBtn.addEventListener('click', function() {
-        isEditing = false;
-        toggleEditMode();
-    });
+        cancelBtn.addEventListener('click', function () {
+            isEditing = false;
+            toggleEditMode();
+        });
 
-    function toggleEditMode() {
-        if (isEditing) {
-            // Switch to edit mode
-            viewMode.style.display = 'none';
-            paperForm.style.display = 'block';
-            editToggle.style.display = 'none';
-            saveBtn.style.display = 'inline-block';
-            cancelBtn.style.display = 'inline-block';
-        } else {
-            // Switch to view mode
-            viewMode.style.display = 'block';
-            paperForm.style.display = 'none';
-            editToggle.style.display = 'inline-block';
-            saveBtn.style.display = 'none';
-            cancelBtn.style.display = 'none';
+        function toggleEditMode() {
+            if (isEditing) {
+                // Switch to edit mode
+                viewMode.style.display = 'none';
+                paperForm.style.display = 'block';
+                editToggle.style.display = 'none';
+                saveBtn.style.display = 'inline-block';
+                cancelBtn.style.display = 'inline-block';
+            } else {
+                // Switch to view mode
+                viewMode.style.display = 'block';
+                paperForm.style.display = 'none';
+                editToggle.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+            }
         }
-    }
-});
+    });
 </script>
+</html>
