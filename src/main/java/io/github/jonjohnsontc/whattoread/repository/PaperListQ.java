@@ -18,6 +18,14 @@ public interface PaperListQ extends CrudRepository<PaperListEntry, String> {
     Page<PaperListEntry> getAllPapers(Pageable pageable);
 
     /**
+     * Retrieves all unread papers from paper list in a paginated format.
+     * @param pageable
+     * @return
+     */
+    @Query(value = "SELECT * FROM paper.paper_list p WHERE p.read = false", nativeQuery = true)
+    Page<PaperListEntry> getUnreadPapers(Pageable pageable);
+
+    /**
      * Retrieves a paginated list of paper entries that match a specific search term.
      * This method is used to search papers by title, authors, or tags.
      *

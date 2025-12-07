@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Paper</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
 <div class="container">
     <h1>Add a Paper</h1>
     <form id="paperForm" action="/paper/new" method="post">
@@ -46,6 +55,7 @@
         <button type="submit">Add Paper</button>
     </form>
 </div>
+</body>
 <script>
     document.getElementById('authorsTextGroup').style.display = 'none';
     document.getElementById('jsAuthorsGroup').style.display = 'block';
@@ -77,18 +87,4 @@
         this.submit();
     });
 </script>
-
-<style>
-    body {
-        font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
-    }
-
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
+</html>

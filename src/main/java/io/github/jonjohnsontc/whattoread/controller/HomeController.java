@@ -28,9 +28,9 @@ public class HomeController {
 
     @GetMapping("/")
     @ResponseBody
-    public String home() {
+    public String home(@RequestParam(required = false, defaultValue = "false") boolean showRead) {
         final String templateName = "home.jte";
-        var page = paperService.getAllPapers();
+        var page = showRead ? paperService.getAllPapers() : paperService.getUnreadPapers();
 
         paperList.setPapers(page.getContent());
         paperList.setCurrentPage(page.getNumber());
@@ -62,7 +62,6 @@ public class HomeController {
     @GetMapping("/paper/new")
     @ResponseBody
     public String newPaper() {
-        System.out.println("Retrieving /paper/new details");
         TemplateOutput output = new StringOutput();
         templateEngine.render("newPaper.jte", null, output);
         return output.toString();

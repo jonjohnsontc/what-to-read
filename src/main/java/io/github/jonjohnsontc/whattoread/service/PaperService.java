@@ -53,6 +53,15 @@ public class PaperService {
     }
 
     /**
+     * Retrieves a paginated list of papers that are marked as unread
+     * @return Page of PaperListEntry containing unread papers
+     */
+    public Page<PaperListEntry> getUnreadPapers() {
+        var pageable = PageRequest.of(0, 100); // Adjust page size as needed
+        return paperListQ.getUnreadPapers(pageable);
+    }
+
+    /**
      * Retrieves all papers from the paper list.
      * This method is used to fetch the complete list of papers.
      *

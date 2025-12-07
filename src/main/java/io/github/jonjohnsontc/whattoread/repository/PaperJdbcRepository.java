@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Repository
 public class PaperJdbcRepository {
+
     private final JdbcTemplate jdbcTemplate;
 
     public PaperJdbcRepository(JdbcTemplate jdbcTemplate) {
@@ -23,6 +24,11 @@ public class PaperJdbcRepository {
                 paperId, title, url, year, read);
         return paperId;
     }
+
+    // public List<> findUnreadPapers() {
+    //     String unreadPapersQuery = "SELECT * FROM paper.paper_list WHERE read = false";
+    //     return jdbcTemplate.queryForList(unreadPapersQuery);
+    // }
 
     public UUID findOrInsertAuthor(String name) {
         String insert = """
